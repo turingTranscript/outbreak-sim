@@ -1,6 +1,7 @@
 {
   "name": "outbreak-simulator",
   "version": "1.0.0",
+  "homepage": "https://turingTranscript.github.io/outbreak-sim",
   "description": "Interactive outbreak simulator with mutation, transmission, drug selection, drift, recombination, and migration",
   "private": true,
   "dependencies": {
