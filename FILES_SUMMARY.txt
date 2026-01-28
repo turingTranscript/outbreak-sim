@@ -1,0 +1,304 @@
+================================================================================
+OUTBREAK SIMULATOR - COMPLETE STANDALONE APP
+================================================================================
+
+All files needed to run and deploy a production-grade outbreak dynamics 
+simulator are included below.
+
+================================================================================
+DOCUMENTATION FILES (READ THESE FIRST)
+================================================================================
+
+1. 00_START_HERE.md ⭐
+   → Main entry point - read this first!
+   → Explains the bug fix
+   → Quick navigation to other docs
+   → 5-minute overview
+
+2. QUICKSTART.md
+   → Get running in 30 seconds
+   → Deploy in 5 minutes
+   → Copy-paste commands
+   → No explanation, just do it!
+
+3. README.md
+   → Complete user guide
+   → How to use the simulator
+   → Parameter explanations
+   → Experiment ideas
+   → Technology stack
+
+4. GITHUB_SETUP.md
+   → Step-by-step GitHub Pages deployment
+   → Detailed walkthrough with explanations
+   → Troubleshooting section
+   → Perfect for first-time GitHub users
+
+5. TECHNICAL_DOCUMENTATION.md
+   → Deep dive into what was broken
+   → Why the fix works
+   → Code comparisons (before/after)
+   → Architecture overview
+   → For developers who want to understand
+
+6. DEPLOY_CHECKLIST.md
+   → Pre-deployment verification
+   → Testing checklist
+   → Common issues & fixes
+   → Alternative deployment options
+
+7. PACKAGE_CONTENTS.md
+   → What's included in this package
+   → Complete file descriptions
+   → How to modify code
+   → Support references
+
+================================================================================
+APPLICATION FILES (CORE SIMULATION)
+================================================================================
+
+App Entry Point:
+├── src/index.js                     → React DOM entry point
+├── src/index.css                    → Global styles + Tailwind imports
+└── src/App.jsx                      → Main app component wrapper
+
+Main Simulation (FIXED!):
+└── src/components/OutbreakSimulator.jsx
+    → THE MAIN FILE with all simulation logic
+    → 6 evolutionary processes per generation:
+       1. Mutation round (including drug resistance)
+       2. Transmission bottleneck
+       3. Drug selection
+       4. Drift sampling
+       5. Recombination/HGT
+       6. Migration between hosts
+    → Real-time statistics
+    → Interactive parameter controls
+    → Visualization with colored dots
+
+================================================================================
+CONFIGURATION FILES
+================================================================================
+
+Build & Dependencies:
+├── package.json                     → NPM dependencies and scripts
+├── tailwind.config.js               → Tailwind CSS customization
+├── postcss.config.js                → CSS processing config
+└── .gitignore                       → Git exclusions
+
+GitHub Actions CI/CD:
+└── .github/workflows/deploy.yml     → Automatic GitHub Pages deployment
+                                       Triggers on push to main branch
+
+HTML Template:
+└── public/index.html                → React mount point
+
+================================================================================
+HOW TO USE THIS PACKAGE
+================================================================================
+
+STEP 1: Read Documentation
+   Start with: 00_START_HERE.md (2 min)
+   
+STEP 2: Run Locally
+   bash:
+   $ npm install
+   $ npm start
+   
+   Opens at http://localhost:3000
+
+STEP 3: Test the Simulation
+   - Click Play button
+   - Watch for ~30 generations
+   - See red dots (drug-resistant) appear and spread
+   - Experiment with parameter sliders
+
+STEP 4: Deploy Online
+   Option A (Easy - 5 min):
+   $ npm install --save-dev gh-pages
+   $ Update package.json "homepage" with your GitHub URL
+   $ npm run deploy
+   
+   Option B (Automatic - 10 min):
+   Follow GITHUB_SETUP.md for step-by-step GitHub Pages deployment
+   Future updates deploy automatically on each push!
+
+================================================================================
+THE BUG THAT'S FIXED
+================================================================================
+
+PROBLEM:
+  Drug-resistant strains never appeared (no red dots)
+
+ROOT CAUSE:
+  - Mutation code only created 'MUT' type, never 'RES'
+  - Drug resistance mutations were never actually generated
+  - Drug selection looked for resistance that didn't exist
+
+SOLUTION:
+  - Added drugResistanceMutationRate parameter (1% per generation)
+  - Explicit drug resistance mutation pathway
+  - Separate mutation check that generates 'RES' type
+  - Now drug selection can find and amplify resistance
+
+RESULT:
+  ✅ Red dots appear after 10-20 generations
+  ✅ Red spreads under drug selection pressure
+  ✅ Evolution of antibiotic resistance now visible
+
+See TECHNICAL_DOCUMENTATION.md for full code comparison
+
+================================================================================
+QUICK REFERENCE
+================================================================================
+
+To run locally:
+  $ npm install && npm start
+
+To deploy to GitHub Pages:
+  $ git init && git add . && git commit -m "Initial"
+  $ # Create repo on github.com
+  $ git remote add origin https://github.com/YOU/outbreak-simulator.git
+  $ # Update package.json "homepage"
+  $ git push -u origin main
+
+To update live site:
+  $ git add . && git commit -m "Changes" && git push
+  $ # GitHub Actions deploys automatically in 2-3 min
+
+To understand what's happening:
+  $ See TECHNICAL_DOCUMENTATION.md
+
+To customize colors/appearance:
+  $ Edit tailwind.config.js or src/components/OutbreakSimulator.jsx
+
+================================================================================
+WHAT'S DIFFERENT FROM ORIGINAL
+================================================================================
+
+Changes made to fix the bug:
+
+1. New parameter: drugResistanceMutationRate (0.01 default)
+
+2. Mutation round enhanced:
+   ✓ Added separate if-block for drug resistance
+   ✓ Creates 'drug_resistance' mutation explicitly
+   ✓ Sets type to 'RES' (not 'MUT')
+   ✓ Applies fitness cost
+
+3. Drug selection improved:
+   ✓ Can now find resistant individuals
+   ✓ Actually triggers when resistance exists
+   ✓ Strong pressure: kills wild-type (95%), keeps resistant (90%)
+
+4. Cloning function:
+   ✓ Proper handling of Set data structures
+   ✓ Consistent throughout all evolutionary steps
+
+Everything else is the same - same 6-step evolutionary process, same UI,
+same visualization, same parameters... just actually works now!
+
+================================================================================
+FILES FOR DIFFERENT PURPOSES
+================================================================================
+
+If you want to...
+
+  ✓ Get started immediately
+    → Read: QUICKSTART.md
+    → Then: npm install && npm start
+
+  ✓ Understand the simulation
+    → Read: README.md
+    → Then: Experiment with different parameters
+
+  ✓ Deploy to GitHub
+    → Read: GITHUB_SETUP.md
+    → Follow: Step-by-step instructions
+
+  ✓ Deploy elsewhere (Vercel/Netlify/other)
+    → Read: DEPLOY_CHECKLIST.md
+    → Alternative Deployments section
+
+  ✓ Understand why drug resistance is fixed
+    → Read: TECHNICAL_DOCUMENTATION.md
+    → See: Before/after code comparisons
+
+  ✓ Know what files do what
+    → Read: PACKAGE_CONTENTS.md
+    → Complete file descriptions
+
+  ✓ Know all files are present
+    → You're reading this file! ✓
+
+  ✓ Start coding modifications
+    → Edit: src/components/OutbreakSimulator.jsx
+    → Each evolutionary step is its own function
+    → Well-commented for easy understanding
+
+================================================================================
+TECHNOLOGY STACK
+================================================================================
+
+Frontend Framework:
+  • React 18 - Modern UI with hooks
+  • Create React App - Zero-config build tool
+
+Styling:
+  • Tailwind CSS - Utility-first CSS framework
+  • PostCSS - CSS processing
+  • Lucide React - Beautiful icons
+
+Deployment:
+  • GitHub Pages - Free static hosting
+  • GitHub Actions - CI/CD automation
+
+Everything is open source and free!
+
+================================================================================
+SUPPORT & HELP
+================================================================================
+
+Issue                          Solution
+─────────────────────────────────────────────────────────────────────────────
+I don't know where to start  → Read: 00_START_HERE.md
+
+I want to run it locally      → Read: QUICKSTART.md
+
+I want to deploy it           → Read: GITHUB_SETUP.md
+
+I want to understand the code → Read: TECHNICAL_DOCUMENTATION.md
+
+I'm getting errors            → Check: Browser console (F12)
+                               Check: Package.json homepage URL
+
+I want to customize it        → Edit: src/components/OutbreakSimulator.jsx
+                               Edit: tailwind.config.js
+
+I see red dots but simulation → Try increasing drugResistanceMutationRate
+isn't working as expected       Try running longer (30+ generations)
+                               Check browser console for errors
+
+My GitHub Pages isn't working → Did you update package.json "homepage"?
+                               Did you wait 2-3 minutes for rebuild?
+                               Try hard refresh (Ctrl+Shift+R)
+
+I want to modify parameters   → Open app → Click "Advanced Parameters"
+                               Sliders adjust: mutationRate, drugPressure, etc.
+
+I want to change colors       → Edit: getColor() function in OutbreakSimulator.jsx
+                               Or edit Tailwind colors in tailwind.config.js
+
+I want to add features        → The code is modular!
+                               Each evolutionary step is a separate function
+                               Well-commented throughout
+
+═════════════════════════════════════════════════════════════════════════════
+
+Ready to go? Start with: 00_START_HERE.md
+
+Questions? Each documentation file is written to answer specific questions.
+Pick the one that matches your need!
+
+Version: 1.0.0 (Fixed - Drug Resistance Now Works!)
+Last Updated: January 2026
